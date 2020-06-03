@@ -1,0 +1,12 @@
+
+MODEL:
+  ROI_HEADS:
+    NAME: "StandardROIHeads"
+    SCORE_THRESH_TEST: 0.5
+DATASETS:
+  TRAIN: ("sample_fashion_train", )
+  TEST: ("sample_fashion_test",)
+SOLVER: 
+  MAX_ITER: 50000
+  IMS_PER_BATCH: 4
+OUTPUT_DIR: '/home/nasty/imaterialist2020/output/exp02'

@@ -1,0 +1,12 @@
+DATALOADER:
+  NUM_WORKERS: 1
+MODEL:
+  ROI_HEADS:
+    NAME: "StandardROIHeads"
+    SCORE_THRESH_TEST: 0.3
+DATASETS:
+  TRAIN: ("sample_fashion_train", )
+  TEST: ("sample_fashion_test",)
+SOLVER: 
+  MAX_ITER: 200
+OUTPUT_DIR: '/home/nasty/imaterialist2020/output/exp01'
