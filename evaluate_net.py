@@ -1,3 +1,12 @@
+"""
+Run the coco evaluator on "sample_fashion_test" to evaluate performance using 
+AP metric
+
+TODO: add command line interface for all dataset and model weight inputs instead of 
+having them hard coded.
+"""
+
+
 from pathlib import Path
 
 from detectron2.engine import DefaultTrainer

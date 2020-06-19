@@ -1,4 +1,15 @@
 
+"""
+Run model inference on a set of image. 
+
+Files will be generated one by one to save memory
+
+Predicted masks are encoded into RLE format to save memory as well. 
+
+Predictions can be visualized and will also be saved to csv. 
+
+"""
+
 import logging
 import csv
 import torch
@@ -91,9 +102,10 @@ def execute_on_outputs(entry: Dict[str, Any], outputs: Instances) -> List[dict]:
         rles = refine_masks(outputs.pred_masks.cpu())
 
 
-
+        ##############################
         # Uncomment following code to encode the masks to compressed RLE 
         # instead of uncompressed RLE like above: 
+        ##############################
 
         # use RLE to encode the masks, because they are too large and takes memory
         # since this evaluator stores outputs of the entire dataset

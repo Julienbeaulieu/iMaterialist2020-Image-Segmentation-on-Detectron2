@@ -1,3 +1,12 @@
+"""
+iMaterialist 2020 training script. 
+
+This script runs a trainer where we pass in custom dataset mapper which contains all the 
+attributes of each instance. 
+
+We register the data dictionnaries, load the configs, and run the trainer
+"""
+
 
 import pandas as pd
 import logging
@@ -18,14 +27,15 @@ from iMaterialist2020.imaterialist.modeling import build_model
 
 from iMaterialist2020.imaterialist.modeling import roi_heads
 
+# Get environment variables 
 env = Env()
 env.read_env()
 
+# Set path to the data
 path_data_interim = Path(env("path_interim"))
 
-
 class FashionTrainer(DefaultTrainer):
-    'A customized version of DefaultTrainer. We add a mapping to the dataloader'
+    'A customized version of DefaultTrainer. We add a custom mapping to the dataloader'
     
     @classmethod
     def build_train_loader(cls, cfg):
@@ -49,6 +59,9 @@ class FashionTrainer(DefaultTrainer):
         return model
 
 def setup(args):
+    """
+    Setup all the custom and default configs before training
+    """
     cfg = get_cfg()
     add_imaterialist_config(cfg)
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
@@ -62,6 +75,13 @@ def setup(args):
     return cfg
 
 def main(args):
+    """
+    load dataframes
+    register detectron2 datadictionnaries
+    setup config
+    initialize the trainer
+    run trainer to train the model
+    """
     # load dataframe
     # fixme: this number needs to update or dynamic
     datadic_train = pd.read_feather(path_data_interim / 'imaterialist_train_multihot_n=266721.feather')
@@ -69,24 +89,6 @@ def main(args):
 
     register_datadict(datadic_train, "sample_fashion_train")
     register_datadict(datadic_val, "sample_fashion_test")
-
-    cfg = setup(args)
-
-    trainer = FashionTrainer(cfg)
-    trainer.resume_or_load(resume=args.resume)
-    return trainer.train()
-
-def main2():
-    # load dataframe
-    # fixme: this number needs to update or dynamic
-    datadic_train = pd.read_feather(path_data_interim / 'imaterialist_train_multihot_n=266721.feather')
-    datadic_val = pd.read_feather(path_data_interim / 'imaterailist_test_multihot_n=66680.feather')
-
-    register_datadict(datadic_train, "sample_fashion_train")
-    register_datadict(datadic_val, "sample_fashion_test")
-
-    args = default_argument_parser().parse_args()
-    args.config_file = "/home/yang.ding/git/imaterialist2020/iMaterialist2020/configs/DevYang.yaml"
 
     cfg = setup(args)
 
@@ -95,15 +97,14 @@ def main2():
     return trainer.train()
 
 if __name__ == '__main__':
-    main2()
-    # args = default_argument_parser().parse_args()
-    # args.config_file = "/home/yang.ding/git/imaterialist2020/iMaterialist2020/configs/DevYang.yaml"
-    # print("Command Line Args:", args)
-    # launch(
-    #     main,
-    #     args.num_gpus,
-    #     num_machines=args.num_machines,
-    #     machine_rank=args.machine_rank,
-    #     dist_url=args.dist_url,
-    #     args=(args,),
-    # )
+    args = default_argument_parser().parse_args()
+    args.config_file = "/home/yang.ding/git/imaterialist2020/iMaterialist2020/configs/DevYang.yaml"
+    print("Command Line Args:", args)
+    launch(
+        main,
+        args.num_gpus,
+        num_machines=args.num_machines,
+        machine_rank=args.machine_rank,
+        dist_url=args.dist_url,
+        args=(args,),
+    )

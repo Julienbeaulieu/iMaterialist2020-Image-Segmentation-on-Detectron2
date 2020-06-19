@@ -1,3 +1,7 @@
+"""
+Runs inference on one image
+"""
+
 import cv2
 from datetime import datetime
 from matplotlib.pyplot import imshow, imsave
