@@ -1,6 +1,6 @@
 # iMaterialist 2020 Kaggle Competition in Detectron2
 
-In this competition we are tasked to do instance segmentation with attribute localization (recognize one or multiple attributes for the instances) on a fashion and apparel dataset. [Here is the link to competition](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview). 
+In this competition we are tasked to do instance segmentation as well as attribute localization (recognize one or multiple attributes for the instances) on a fashion and apparel dataset. [Here is the link to competition](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview). 
 
 <p><img src="https://julienbeaulieu.github.io/public/imaterialist/imaterialist-dataset.png" /></p>
 
