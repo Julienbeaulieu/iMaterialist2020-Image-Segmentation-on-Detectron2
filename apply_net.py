@@ -28,11 +28,11 @@ from detectron2.engine import default_argument_parser, launch
 from detectron2.structures.instances import Instances
 from detectron2.utils.visualizer import ColorMode, Visualizer
 
-from iMaterialist2020.imaterialist.data.datasets.coco import register_datadict, MetadataCatalog
-from iMaterialist2020.imaterialist.config import setup_prediction
-from iMaterialist2020.imaterialist.evaluator import iMatPredictor
-from iMaterialist2020.imaterialist.data.datasets.rle_utils_old import mask_to_KaggleRLE
-from iMaterialist2020.imaterialist.data.datasets.rle_utils import mask_to_KaggleRLE_downscale
+from imaterialist.data.datasets.coco import register_datadict, MetadataCatalog
+from imaterialist.config import setup_prediction
+from imaterialist.evaluator import iMatPredictor
+from imaterialist.data.datasets.rle_utils_old import mask_to_KaggleRLE
+from imaterialist.data.datasets.rle_utils import mask_to_KaggleRLE_downscale
 
 
 LOGGER_NAME = "apply_net"

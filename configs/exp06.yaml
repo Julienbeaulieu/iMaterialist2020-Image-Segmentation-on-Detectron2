@@ -1,5 +1,6 @@
-DATALOADER:
-  NUM_WORKERS: 1
+
+INPUT:
+  MAX_SIZE_TEST: 1024
 MODEL:
   ROI_BOX_HEAD:
     NUM_FC: 2
@@ -10,7 +11,7 @@ DATASETS:
   TRAIN: ("sample_fashion_train", )
   TEST: ("sample_fashion_test",)
 SOLVER: 
-  MAX_ITER: 120000
-  IMS_PER_BATCH: 2
-  BASE_LR: 0.0004
-OUTPUT_DIR: '/home/julien/data-science/kaggle/imaterialist/output/exp04'
+  MAX_ITER: 500
+  IMS_PER_BATCH: 4
+  BASE_LR: 0.004
+OUTPUT_DIR: '/home/julien/data-science/kaggle/imaterialist/output/images'

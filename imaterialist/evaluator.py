@@ -2,8 +2,8 @@ import torch
 import detectron2.data.transforms as T
 from detectron2.checkpoint import DetectionCheckpointer
 
-from iMaterialist2020.imaterialist.data.datasets.coco import MetadataCatalog
-from iMaterialist2020.imaterialist.modeling import build_model
+from imaterialist.data.datasets.coco import MetadataCatalog
+from imaterialist.modeling import build_model
 
 class iMatPredictor:
     """

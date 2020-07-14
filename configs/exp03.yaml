@@ -14,5 +14,5 @@ SOLVER:
   BASE_LR: 0.0004
 TEST:
   DETECTIONS_PER_IMAGE: 30
-OUTPUT_DIR: '/home/nasty/imaterialist2020/output/exp03'
+OUTPUT_DIR: '/home/julien/data-science/kaggle/imaterialist/output/exp03'
 

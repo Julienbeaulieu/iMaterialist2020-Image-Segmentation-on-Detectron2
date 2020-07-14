@@ -9,4 +9,4 @@ DATASETS:
 SOLVER: 
   MAX_ITER: 50000
   IMS_PER_BATCH: 4
-OUTPUT_DIR: '/home/nasty/imaterialist2020/output/exp02'
+OUTPUT_DIR: '/home/julien/data-science/kaggle/imaterialist/output/exp02'

@@ -1,12 +1,12 @@
 import json
 import logging
-import feather
+import pickle
 import numpy as np
 import pandas as pd
 from pathlib import Path
 from sklearn import preprocessing
 
-from iMaterialist2020.imaterialist.data.datasets.rle_utils import rle_decode_string, rle2bbox
+from imaterialist.data.datasets.rle_utils import rle_decode_string, rle2bbox
 
 from environs import Env
 
@@ -112,6 +112,8 @@ def create_datadict(df_labels_masks, df_attributes):
     # Add each x, y coordinate as a column
     datedic_labels_masks['x0'], datedic_labels_masks['y0'], datedic_labels_masks['x1'], datedic_labels_masks['y1'] = bboxes_array[:, 0], bboxes_array[:, 1], bboxes_array[:,2], bboxes_array[:, 3]
     
+    datedic_labels_masks = datedic_labels_masks.astype({"x0": int, "y0": int, "x1":int, 'y1':int})
+
     #Replace NaNs from AttributeIds by 999
     datedic_labels_masks = datedic_labels_masks.fillna(999)
     
@@ -130,7 +132,7 @@ def main(n_sample_size: int = 0, train_test_split: float = 0.8):
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
 
-    data_full, df_attributes, _ = load_dataset_into_dataframes()
+    data_full, df_attributes, _ = load_dataset_into_dataframes(n_cases=500)
     datadic_full = create_datadict(data_full, df_attributes)
 
     # if n_sample_size not specified, use entire data set.
@@ -145,9 +147,12 @@ def main(n_sample_size: int = 0, train_test_split: float = 0.8):
     datadic_train = datadic_full[:n_train].copy()
     datadic_val = datadic_full[-n_test:].copy()
 
-    # Saving to feather format - faster than pickle 
-    datadic_train.reset_index().to_feather(path_data_interim / f'imaterialist_train_multihot_n={n_train}.feather')
-    datadic_val.reset_index().to_feather(path_data_interim / f'imaterailist_test_multihot_n={n_test}.feather')
+    pickle.dump(datadic_train, open(path_data_interim / f'imaterialist_train_multihot_n={n_train}.p', "wb"))
+    pickle.dump(datadic_val, open(path_data_interim / f'imaterialist_test_multihot_n={n_test}.p', "wb"))
+
+    # # Saving to feather format - faster than pickle 
+    # datadic_train.reset_index().to_feather(path_data_interim / f'imaterialist_train_multihot_n={n_train}.feather')
+    # datadic_val.reset_index().to_feather(path_data_interim / f'imaterailist_test_multihot_n={n_test}.feather')
     
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'

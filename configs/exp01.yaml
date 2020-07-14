@@ -8,5 +8,7 @@ DATASETS:
   TRAIN: ("sample_fashion_train", )
   TEST: ("sample_fashion_test",)
 SOLVER: 
-  MAX_ITER: 200
-OUTPUT_DIR: '/home/nasty/imaterialist2020/output/exp01'
+  MAX_ITER: 1000
+OUTPUT_DIR: '/home/julien/data-science/kaggle/imaterialist/output/exp01'
+
+

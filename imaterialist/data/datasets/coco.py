@@ -4,8 +4,8 @@ import numpy as np
 
 from detectron2.structures import BoxMode
 from detectron2.data import DatasetCatalog, MetadataCatalog
-from iMaterialist2020.imaterialist.data.datasets.make_dataset import load_dataset_into_dataframes
-from iMaterialist2020.imaterialist.data.datasets.rle_utils import rle_decode_string
+from imaterialist.data.datasets.make_dataset import load_dataset_into_dataframes
+from imaterialist.data.datasets.rle_utils import rle_decode_string
 
 
 
@@ -61,7 +61,6 @@ def convert_to_datadict(df_input):
                 'category_id': row['ClassId'],
                 'attributes': row['AttributesIds'], # New key: attributes
                 'segmentation': segmentation,
-                'iscrowd': 0
             }
             objs.append(obj)
         record['annotations'] = objs

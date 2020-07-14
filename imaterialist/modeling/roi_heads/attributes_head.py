@@ -10,7 +10,7 @@ from detectron2.modeling.box_regression import Box2BoxTransform
 from detectron2.structures import Boxes, Instances
 from detectron2.utils.events import get_event_storage
 from detectron2.modeling.roi_heads.fast_rcnn import FastRCNNOutputLayers, FastRCNNOutputs
-from detectron2.modeling.box_regression import Box2BoxTransform, apply_deltas_broadcast
+from detectron2.modeling.box_regression import Box2BoxTransform
 
 __all__ = ["fast_rcnn_inference", "AttributesFastRCNNOutputLayers"]
 
@@ -189,7 +189,7 @@ class AttributesFastRCNNOutputs(FastRCNNOutputs):
         self.box2box_transform = box2box_transform
         self.num_preds_per_image = [len(p) for p in proposals]
         self.pred_class_logits = pred_class_logits
-        self.pred_attributes = pred_attributes # attribute predictions
+        self.pred_attributes = pred_attributes  # attribute predictions
         self.pred_proposal_deltas = pred_proposal_deltas
         self.smooth_l1_beta = smooth_l1_beta
         self.image_shapes = [x.image_size for x in proposals]
@@ -251,12 +251,7 @@ class AttributesFastRCNNOutputs(FastRCNNOutputs):
             scalar Tensor
         """
         if self._no_instances:
-            # TODO 0.0 * pred.sum() is enough since PT1.6
-            return 0.0 * F.binary_cross_entropy_with_logits(
-                self.pred_attributes,
-                torch.zeros(0, dtype=torch.long, device=self.pred_attributes.device),
-                reduction="sum",
-            )
+            return 0.0 
         else:
             return F.binary_cross_entropy_with_logits(
                 self.pred_attributes, 
@@ -444,8 +439,8 @@ class AttributesFastRCNNOutputLayers(FastRCNNOutputLayers):
         num_prop_per_image = [len(p) for p in proposals]
         proposal_boxes = [p.proposal_boxes for p in proposals]
         proposal_boxes = proposal_boxes[0].cat(proposal_boxes).tensor
-        predict_boxes = apply_deltas_broadcast(
-            self.box2box_transform, proposal_deltas, proposal_boxes
+        predict_boxes = self.box2box_transform.apply_deltas(
+            proposal_deltas, proposal_boxes
         )  # Nx(KxB)
         return predict_boxes.split(num_prop_per_image)
 

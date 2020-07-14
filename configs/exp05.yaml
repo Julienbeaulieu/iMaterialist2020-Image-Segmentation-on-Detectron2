@@ -14,5 +14,4 @@ SOLVER:
   MAX_ITER: 120000
   IMS_PER_BATCH: 8
   BASE_LR: 0.0004
-OUTPUT_DIR: '/home/nasty/imaterialist2020/output/exp05'
-
+OUTPUT_DIR: '/home/julien/data-science/kaggle/imaterialist/output/exp05'

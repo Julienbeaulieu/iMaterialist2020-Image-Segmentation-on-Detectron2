@@ -12,6 +12,7 @@ import pandas as pd
 import logging
 from environs import Env
 from pathlib import Path
+import pickle
 
 import detectron2.utils.comm as comm
 from detectron2 import model_zoo
@@ -20,12 +21,12 @@ from detectron2.engine import DefaultTrainer, default_argument_parser, default_s
 from detectron2.data import build_detection_train_loader, build_detection_test_loader
 from detectron2.utils.logger import setup_logger
 
-from iMaterialist2020.imaterialist.data.dataset_mapper import iMatDatasetMapper
-from iMaterialist2020.imaterialist.config import add_imaterialist_config
-from iMaterialist2020.imaterialist.data.datasets.coco import register_datadict
-from iMaterialist2020.imaterialist.modeling import build_model
+from imaterialist.data.dataset_mapper import iMatDatasetMapper
+from imaterialist.config import add_imaterialist_config
+from imaterialist.data.datasets.coco import register_datadict
+from imaterialist.modeling import build_model
 
-from iMaterialist2020.imaterialist.modeling import roi_heads
+from imaterialist.modeling import roi_heads
 
 # Get environment variables 
 env = Env()
@@ -84,11 +85,14 @@ def main(args):
     """
     # load dataframe
     # fixme: this number needs to update or dynamic
-    datadic_train = pd.read_feather(path_data_interim / 'imaterialist_train_multihot_n=266721.feather')
-    datadic_val = pd.read_feather(path_data_interim / 'imaterailist_test_multihot_n=66680.feather')
+    # datadic_train = pd.read_feather(path_data_interim / 'imaterialist_train_multihot_n=400.feather')
+    # datadic_val = pd.read_feather(path_data_interim / 'imaterailist_test_multihot_n=100.feather')
 
-    register_datadict(datadic_train, "sample_fashion_train")
-    register_datadict(datadic_val, "sample_fashion_test")
+    datadict_train = pickle.load(open(path_data_interim / 'imaterialist_train_multihot_n=400.p', 'rb'))
+    datadict_val = pickle.load(open(path_data_interim / 'imaterialist_test_multihot_n=100.p', 'rb'))
+
+    register_datadict(datadict_train, "sample_fashion_train")
+    register_datadict(datadict_val, "sample_fashion_test")
 
     cfg = setup(args)
 
@@ -98,7 +102,7 @@ def main(args):
 
 if __name__ == '__main__':
     args = default_argument_parser().parse_args()
-    args.config_file = "/home/yang.ding/git/imaterialist2020/iMaterialist2020/configs/DevYang.yaml"
+    args.config_file = "/home/julien/data-science/kaggle/imaterialist/configs/exp06.yaml"
     print("Command Line Args:", args)
     launch(
         main,
